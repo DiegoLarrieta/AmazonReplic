@@ -33,7 +33,7 @@ WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  after `boot0.js` is loaded and before this file is loaded.
  */
 
-(function() {
+ (function() {
   const env = jasmine.getEnv();
 
   /**

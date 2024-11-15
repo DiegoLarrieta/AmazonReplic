@@ -2,7 +2,7 @@ export let cart;
 
 loadFromStorage();
 
-export function loadFromStorage(){
+export function loadFromStorage() {
   cart = JSON.parse(localStorage.getItem('cart'));
 
   if (!cart) {
@@ -13,7 +13,7 @@ export function loadFromStorage(){
     }, {
       productId: '15b6fc6f-327a-4ec4-896f-486349e85a3d',
       quantity: 1,
-      deliveryOptionId:'2'
+      deliveryOptionId: '2'
     }];
   }
 }
@@ -30,51 +30,16 @@ export function addToCart(productId) {
       matchingItem = cartItem;
     }
   });
-  const quantitySelector = document.querySelector(
-    `.js-quantity-selector-${productId}`
-  );
 
-  const quantity = Number(quantitySelector.value);
-
-  if(matchingItem){
-    matchingItem.quantity += quantity;
-  }else{
+  if (matchingItem) {
+    matchingItem.quantity += 1;
+  } else {
     cart.push({
-      productId : productId,
-      quantity : quantity,
-      deliveryOptionId :'1'
+      productId: productId,
+      quantity: 1,
+      deliveryOptionId: '1'
     });
   }
-  let cartQuantity = 0;
-  cart.forEach((item)=>{
-    cartQuantity += item.quantity;
-  });
-
-  document.querySelector('.js-cart-quantity')
-    .innerHTML = cartQuantity;
-
-  saveToStorage();
-}
-
-export function calculateCartQuantity(){
-  let cartQuantity = 0;
-
-  cart.forEach((cartItem) =>{
-    cartQuantity += cartItem.quantity;
-  });
-  return cartQuantity;
-}
-
-export function updateQuantity(productId, newQuantity) {
-  let matchingItem;
-
-  cart.forEach((cartItem) => {
-    if (productId === cartItem.productId) {
-      matchingItem = cartItem;
-    }
-  });
-
-  matchingItem.quantity = newQuantity;
 
   saveToStorage();
 }
@@ -93,7 +58,7 @@ export function removeFromCart(productId) {
   saveToStorage();
 }
 
-export function updateDeliveryOption(productId,deliveryOptionId){
+export function updateDeliveryOption(productId, deliveryOptionId) {
   let matchingItem;
 
   cart.forEach((cartItem) => {
@@ -105,4 +70,16 @@ export function updateDeliveryOption(productId,deliveryOptionId){
   matchingItem.deliveryOptionId = deliveryOptionId;
 
   saveToStorage();
+}
+
+export function loadCart(fun) {
+  const xhr = new XMLHttpRequest();
+
+  xhr.addEventListener('load', () => {
+    console.log(xhr.response);
+    fun();
+  });
+
+  xhr.open('GET', 'https://supersimplebackend.dev/cart');
+  xhr.send();
 }
